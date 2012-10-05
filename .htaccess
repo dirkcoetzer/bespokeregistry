@@ -1,0 +1,28 @@
+#
+# Apache/PHP settings:
+#
+
+RewriteEngine on
+
+# if a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# otherwise forward it to index.php
+RewriteRule . index.php
+
+
+#RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ http://%1%{REQUEST_URI} [L,R=301]
+
+
+RewriteCond %{HTTPS} !=on
+RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+
+# Various rewrite rules.
+#301 Redirects
+
+Redirect 301 /user/site/recommendedSuppliers https://bespokeregistry.co.za/site/recommendedSuppliers
+Redirect 301 /user/site/faq https://bespokeregistry.co.za/index.php/site/faq
+Redirect 301 /user/site/termsandconditions https://bespokeregistry.co.za/site/termsandconditions
