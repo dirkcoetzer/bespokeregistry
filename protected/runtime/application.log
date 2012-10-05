@@ -8845,3 +8845,23 @@ Stack trace:
 #1 /home/bespoker/framework/base/CApplication.php(158): CWebApplication->processRequest()
 #2 /home/bespoker/public_html/index.php(12): CApplication->run()
 #3 {main} REQUEST_URI=/robots.txt
+2012/10/05 16:37:50 [error] [application.modules.user.controllers.YumController] Password invalid for user admin (Ip-Address: ::1)
+in /Applications/MAMP/htdocs/bespokeGit/protected/modules/user/models/Yum.php (81)
+in /Applications/MAMP/htdocs/bespokeGit/protected/modules/user/controllers/YumAuthController.php (200)
+in /Applications/MAMP/htdocs/bespokeGit/protected/modules/user/controllers/YumAuthController.php (160)
+2012/10/05 16:37:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Your registry is not active yet. Please try again later or contact Laura' in /Applications/MAMP/htdocs/bespokeGit/protected/controllers/RegistryProductController.php:272
+Stack trace:
+#0 /Applications/MAMP/htdocs/framework/web/actions/CInlineAction.php(50): RegistryProductController->actionList()
+#1 /Applications/MAMP/htdocs/framework/web/CController.php(300): CInlineAction->runWithParams(Array)
+#2 /Applications/MAMP/htdocs/framework/web/filters/CFilterChain.php(134): CController->runAction(Object(CInlineAction))
+#3 /Applications/MAMP/htdocs/framework/web/filters/CFilter.php(41): CFilterChain->run()
+#4 /Applications/MAMP/htdocs/framework/web/CController.php(1144): CFilter->filter(Object(CFilterChain))
+#5 /Applications/MAMP/htdocs/framework/web/filters/CInlineFilter.php(59): CController->filterAccessControl(Object(CFilterChain))
+#6 /Applications/MAMP/htdocs/framework/web/filters/CFilterChain.php(131): CInlineFilter->filter(Object(CFilterChain))
+#7 /Applications/MAMP/htdocs/framework/web/CController.php(283): CFilterChain->run()
+#8 /Applications/MAMP/htdocs/framework/web/CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 /Applications/MAMP/htdocs/framework/web/CWebApplication.php(277): CController->run('list')
+#10 /Applications/MAMP/htdocs/framework/web/CWebApplication.php(136): CWebApplication->runController('registryProduct...')
+#11 /Applications/MAMP/htdocs/framework/base/CApplication.php(158): CWebApplication->processRequest()
+#12 /Applications/MAMP/htdocs/bespokeGit/index.php(12): CApplication->run()
+#13 {main} REQUEST_URI=/bespokeGit/registryProduct/list

@@ -87,10 +87,10 @@ return array(
 		*/
         // uncomment the following to use a MySQL database
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=bespoker_registry',
+			'connectionString' => 'mysql:host=localhost;dbname=bespoke',
 			'emulatePrepare' => true,
-			'username' => 'bespoker_bespoke',
-			'password' => 'tkSChiM.1sS)',
+			'username' => 'root',
+			'password' => 'root',
 			'charset' => 'utf8',
             'tablePrefix' => 'tbl_',
 		),
@@ -130,8 +130,8 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'laura@bespokeregistry.co.za',
-		//'adminEmail'=>'jdvisagie@gmail.com',
-		'debugEmails'=>false,
+		//'adminEmail'=>'laura@bespokeregistry.co.za',
+		'adminEmail'=>'jdvisagie@gmail.com',
+		'debugEmails'=>true,
 	),
 );
