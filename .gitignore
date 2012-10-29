@@ -9,4 +9,10 @@
 Icon?
 ehthumbs.db
 Thumbs.db
-
+/assets/
+/nbproject/
+/images/products/
+/images/registries/
+/protected/config/main.php
+/protected/runtime/
+/www/
