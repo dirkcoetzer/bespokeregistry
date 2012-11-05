@@ -593,7 +593,7 @@ class OrderController extends Controller
         
         // Find the user's registry
         $criteria = new CDbCriteria;
-        $criteria->condition = "order_id = " . $modelOrder->id;
+        $criteria->addCondition("order_id = " . $modelOrder->id);
         $criteria->order = "parent.title, category.title, t.price desc";
         $orderDetails = OrderDetails::model()->with(array('order', 'product' => array("with" => array("category" => array("order" => "parent.title", "with" => array("parent"))))))->findAll($criteria);
         

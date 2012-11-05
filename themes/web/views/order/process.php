@@ -21,11 +21,11 @@ $this->menu=array(
             $balance = $creditTotal - $redeemTotal;
         ?>
         <span class="account-balance">Balance on <br /> Account</span>
-        <input id="creditTotal" value="R<?php echo $creditTotal; ?>" class="order-balance" />
+        <input id="creditTotal" value="R<?php echo number_format($creditTotal, 0); ?>" class="order-balance" />
         <span class="account-balance">Order <br />Value</span>
-        <input id="redeemTotal" value="R<?php echo $redeemTotal; ?>" class="order-balance" />
+        <input id="redeemTotal" value="R<?php echo number_format($redeemTotal, 0); ?>" class="order-balance" />
         <span class="balance">Balance</span>
-        <input id="balance" value="R<?php echo $balance; ?>" class="order-balance" readonly />
+        <input id="balance" value="R<?php echo number_format($balance, 0); ?>" class="order-balance" readonly />
         <a href="#" class="recalculate"></a>
     </div><!-- End Product details -->
 </div>
@@ -105,7 +105,7 @@ $this->menu=array(
                     <td>
                         <?php if ($orderDetail->stock){ ?>
                         <form id="frm-<?php echo $orderDetail->id; ?>" action="<?php echo $this->createUrl("orderDetails/process", array("id" => $orderDetail->id)); ?>" method="post" style="padding: 0px;">
-                            <input id="input_value" name="input_value" style="text-align: center;" value="<?php echo number_format($orderDetail->price, 0); ?>" class="order-contribution-value">
+                            R<input id="input_value" name="input_value" style="text-align: center;" value="<?php echo number_format($orderDetail->price, 0); ?>" class="order-contribution-value">
                         </form>
                         <?php }else{ ?>
                             <strong>Sold Out</strong>
