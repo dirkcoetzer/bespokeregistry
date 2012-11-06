@@ -220,13 +220,13 @@ class RegistryController extends Controller
 
         if($_POST){
             $criteria = new CDbCriteria();
-            if ($_POST["first_name"] != '')
+            if (isset($_POST["first_name"]))
                 $criteria->addSearchCondition("title", $_POST["first_name"], true, "OR");
-            if ($_POST["last_name"] != '')
+            if (isset($_POST["last_name"]))
                 $criteria->addSearchCondition("title", $_POST["last_name"], true, "OR");
-            if ($_POST["title"] != '')
+            if (isset($_POST["title"]))
                 $criteria->addSearchCondition("title", $_POST["title"], true, "OR");
-            if ($_POST["term"] != '')
+            if (isset($_POST["term"]))
                 $criteria->addSearchCondition("title", $_POST["term"], true, "OR");
 				
             $criteria->addCondition("status_id = 1");

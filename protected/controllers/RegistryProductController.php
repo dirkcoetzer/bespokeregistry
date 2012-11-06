@@ -275,7 +275,7 @@ class RegistryProductController extends Controller
         // Find the user's registry
         $criteria = new CDbCriteria;
         $criteria->condition = "registry_id = " . $registry->id;
-        if ($_POST["category_id"]){
+        if (isset($_POST["category_id"])){
             $criteria->condition = $criteria->condition . " and (category.category_id = " . $_POST["category_id"] ." or category.id = " . $_POST["category_id"] . ")";
             
             $modelCategory = Category::model()->findByPk($_POST["category_id"]);
