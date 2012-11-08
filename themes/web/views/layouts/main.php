@@ -11,8 +11,8 @@
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-ui-1.7.3.custom.min.js" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/cufon-yui.js" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/Gotham_Book_400.font.js" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jsapi.js"></script>
 
-<!-- <script src="http://www.google.com/jsapi"></script> -->
 <link type="text/css"  href="<?php echo Yii::app()->theme->baseUrl; ?>/css/screen.css" rel="stylesheet"media="all" />
 	<script type="text/javascript">
 		Cufon.set('fontFamily', 'Gotham Book').replace('#menu', {hover: true});
