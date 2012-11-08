@@ -178,7 +178,8 @@ class OrderDetailsController extends Controller
         // Update the order detail entry
         $orderDetails = OrderDetails::model()->findByPk($id);
 
-        if ($orderDetails->product->contribution_item){
+        if (RegistryProduct::model()->isContributionItem($orderDetails->order->registry_id, $orderDetails->product_id)){
+            $orderDetails->qty = 1;
             $orderDetails->price = $_POST["input_value"];
         }else{
             $orderDetails->qty = $_POST["input_value"];

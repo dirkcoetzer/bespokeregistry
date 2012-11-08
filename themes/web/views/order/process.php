@@ -135,7 +135,7 @@ $this->menu=array(
           url,
           data,
           function(response){
-            // console.log(response);
+            console.log(response);
             // alert(response.status);
             $('#creditTotal').val('R' + response.creditTotal);
             $('#redeemTotal').val('R' + response.redeemTotal);
