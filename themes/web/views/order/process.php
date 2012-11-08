@@ -38,7 +38,7 @@ $this->menu=array(
         <?php $parent = "" ?>
         <?php $category = "" ?>
         <?php foreach ($orderDetails as $orderDetail){ ?>
-            <?php if (!$orderDetail->product->contribution_item) { ?>
+            <?php if (!RegistryProduct::model()->isContributionItem($order->registry_id, $orderDetail->product_id)) { ?>
                 <?php if ($parent != $orderDetail->product->category->parent->title){ ?>
                     <?php $parent = $orderDetail->product->category->parent->title; ?>
                         <tr class="table-heading pixel-bottom">
