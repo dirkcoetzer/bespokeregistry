@@ -11,7 +11,8 @@
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-ui-1.7.3.custom.min.js" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/cufon-yui.js" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/Gotham_Book_400.font.js" type="text/javascript"></script>
-<script src="http://www.google.com/jsapi"></script>
+
+<!-- <script src="http://www.google.com/jsapi"></script> -->
 <link type="text/css"  href="<?php echo Yii::app()->theme->baseUrl; ?>/css/screen.css" rel="stylesheet"media="all" />
 	<script type="text/javascript">
 		Cufon.set('fontFamily', 'Gotham Book').replace('#menu', {hover: true});
@@ -141,17 +142,17 @@
             </div>
         </div>
     </div>
+    
     <script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-33582755-1']);
-  _gaq.push(['_trackPageview']);
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-33582755-1']);
+         _gaq.push(['_trackPageview']);
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
+         (function() {
+           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+    </script>
 </body>
 </html>
