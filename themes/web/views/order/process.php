@@ -66,7 +66,7 @@ $this->menu=array(
                     <?php echo $orderDetail->product->description; ?></td>
                     <td><?php echo RegistryProduct::model()->getQtyRequested($registry->id, $orderDetail->product->id); ?></td> <!-- RegistryProduct requested_qty -->
                     <td><?php echo Order::model()->getBoughtRegistryProducts($registry->id, $orderDetail->product->id); ?></td> <!-- OrderDetail sum(qty) -->
-                    <td><?php echo number_format($orderDetail->price, 0); ?></td> <!-- RegistryProduct requested_qty -->
+                    <td>R<?php echo number_format($orderDetail->price, 0); ?></td> <!-- RegistryProduct requested_qty -->
                     <td>
                         <?php if ($orderDetail->stock){ ?>
                         <form id="frm-<?php echo $orderDetail->id; ?>" action="<?php echo $this->createUrl("orderDetails/process", array("id" => $orderDetail->id)); ?>" method="post" style="padding: 0px;">
