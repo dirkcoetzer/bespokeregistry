@@ -142,7 +142,6 @@ class Registry extends BespokeRegistryActiveRecord
 
     public function beforeValidate(){
         $this->event_date = strtotime($this->event_date);
-        
         return parent::beforeValidate();
     }
     

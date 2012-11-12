@@ -113,31 +113,32 @@ class RegistryController extends Controller
 	 */
 	public function actionUpdate($id = null)
 	{
-        $this->layout = "column_left";
+            $this->layout = "column_left";
 
-        if (!$id){
-            $criteria = new CDbCriteria;
-            $criteria->condition = "owner_id = " . Yii::app()->user->id . " and status_id = 1";
-            $criteria->order = "event_date asc";
-            $registry = Registry::model()->find($criteria);
-            $id = $registry->id;
-        }
+            if (!$id){
+                $criteria = new CDbCriteria;
+                $criteria->condition = "owner_id = " . Yii::app()->user->id . " and status_id = 1";
+                $criteria->order = "event_date asc";
+                $registry = Registry::model()->find($criteria);
+                $id = $registry->id;
+            }
         
-		$model=$this->loadModel($id);
+            $model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+            // Uncomment the following line if AJAX validation is needed
+            // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Registry']))
-		{
-			$model->attributes=$_POST['Registry'];
-			if($model->save())
-				$this->redirect(array('update','id'=>$model->id));
-		}
+            if(isset($_POST['Registry']))
+            {
+                $model->attributes=$_POST['Registry'];
+                
+                if($model->save())
+                    $this->redirect(array('update','id'=>$model->id));
+            }
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+            $this->render('update',array(
+                    'model'=>$model,
+            ));
 	}
 
 	/**
