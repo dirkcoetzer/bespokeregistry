@@ -52,7 +52,7 @@
     });
     
     
-    	google.load("jquery", "1");
+    	//google.load("jquery", "1");
 		
 		function sticky_relocate() {
 		  var window_top = $(window).scrollTop();
