@@ -45,7 +45,7 @@
             
             // Datepicker
             $('#datepicker').datepicker({
-                dateFormat: "d M, yy",
+                dateFormat: "d M yy",
                 inline: true
             });
 

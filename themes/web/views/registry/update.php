@@ -25,7 +25,7 @@ $this->menu[] = array('label'=>'Email My Consultant', 'url'=>array('registry/con
         <div class="content-subsection">
             <img src="/<?php echo $model->image_thumb; ?>" alt="<?php echo $model->title; ?>" class="registry-profile img-shadow" width="80px" />
             <?php echo $form->textField($model,'title',array('class'=>'registry-name','maxlength'=>50)); ?>
-            <?php echo $form->textField($model,'event_date',array('value' => date("d M, Y", $model->event_date), 'class'=>'registry-date','id' => 'datepicker', 'maxlength'=>50)); ?>
+            <?php echo $form->textField($model,'event_date',array('value' => date("d M Y", $model->event_date), 'class'=>'registry-date','id' => 'datepicker', 'maxlength'=>50)); ?>
             <br />
             <br />
             <a href="#">Add photo</a>
