@@ -1,15 +1,18 @@
 <?php
 $this->breadcrumbs=array(
-	'Orders'=>array('index'),
+	'Orders'=>array('admin'),
 	$model->id,
 );
 
 $this->menu=array(
-	array('label'=>'Manage Order', 'url'=>array('admin')),
+    array('label'=>'Manage Order', 'url'=>array('admin')),
     array('label'=>'Reset Order', 'url'=>array('reset', 'id'=>$model->id)),
     array('label'=>'Approve Order', 'url'=>array('approve', 'id'=>$model->id)),
-    array('label'=>'Add Product', 'url'=>array('/orderDetails/add', 'order_id'=>$model->id)),
 );
+
+if ($model->type == "redeem"){
+    $this->menu[] = array('label'=>'Add Product', 'url'=>array('/orderDetails/add', 'order_id'=>$model->id));
+}
 ?>
 
 <h1>View Order #<?php echo $model->id; ?> <span style="float:right; font-size: 16px; padding-right: 10px; padding-top: 7px;">Current Balance: R <?php echo number_format($balance, 2); ?></span></h1>

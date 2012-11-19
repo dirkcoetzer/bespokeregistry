@@ -52,7 +52,7 @@ class Order extends CActiveRecord
 			array('message, suburb', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, registry_id, first_name, last_name, mobile_phone, message, email, street, suburb, city, postal_code, status, created_date', 'safe', 'on'=>'search'),
+			array('id, registry_id, first_name, last_name, mobile_phone, message, email, street, suburb, city, postal_code, status, created_date, type', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -104,7 +104,7 @@ class Order extends CActiveRecord
 		$criteria->compare('first_name',$this->first_name,true);
 		$criteria->compare('last_name',$this->last_name,true);
 		$criteria->compare('mobile_phone',$this->mobile_phone,true);
-		$criteria->compare('message',$this->message,true);
+		$criteria->compare('type',$this->type,true);
 		$criteria->compare('email',$this->email,true);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('created_date',$this->created_date);
