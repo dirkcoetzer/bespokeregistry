@@ -26,7 +26,7 @@ $this->menu[] = array('label'=>'Email My Consultant', 'url'=>array('registry/con
                     Thank you sent on <?php echo date("d M Y", $order->thank_you_sent); ?>
                 <?php } else { ?>
                     <span style="display: inline-block; float: left;"><input type="checkbox" class="check" value="<?php echo $order->id; ?>"></span> 
-                    <span class="thank-you-to-send">Send Thank You</span>
+                    <span class="thank-you-to-send">Thank You Sent</span>
                 <?php } ?>
             </span>
         </div>
@@ -70,7 +70,7 @@ $this->menu[] = array('label'=>'Email My Consultant', 'url'=>array('registry/con
 <?php } ?>
 
 <script type="text/javascript">
-    $(".thank-you-to-send .check").click(function(e){
+    $(".check").click(function(e){
         var url = "<?php echo $this->createUrl("order/thankYouSent"); ?>";
         var data = {id : $(this).attr('value')}
         
