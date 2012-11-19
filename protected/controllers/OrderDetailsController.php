@@ -8,14 +8,17 @@ class OrderDetailsController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+        private $_order;
+        
 	/**
 	 * @return array action filters
 	 */
 	public function filters()
 	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
+            return array(
+                'accessControl', // perform access control for CRUD operations
+                'orderContext + add list'
+            );
 	}
 
 	/**
@@ -35,7 +38,7 @@ class OrderDetailsController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','setStock'),
+				'actions'=>array('admin','delete','setStock', 'add'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -76,6 +79,30 @@ class OrderDetailsController extends Controller
 		$this->render('create',array(
 			'model'=>$model,
 		));
+	}
+        
+        /**
+	 * Add a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionAdd()
+	{
+            $model=new OrderDetails;
+            $model->order_id = $this->_order->id;
+            
+            // Uncomment the following line if AJAX validation is needed
+            // $this->performAjaxValidation($model);
+
+            if(isset($_POST['OrderDetails']))
+            {
+                $model->attributes=$_POST['OrderDetails'];
+                if($model->save())
+                    $this->redirect(array('/order/view','id'=>$model->order_id));
+            }
+
+            $this->render('add',array(
+                'model'=>$model,
+            ));
 	}
 
 	/**
@@ -212,5 +239,44 @@ class OrderDetailsController extends Controller
         $model->save();
 
         $this->redirect($this->createUrl("order/view/", array("id" => $model->order_id)));
+    }
+    
+    /**
+    * Protected method to load the associated Order model class
+    * @order_id the primary identifier of the associated model
+    * @return object the Order data model based on the primary key
+    */
+    protected function loadOrder($order_id) {
+        //if the order property is null, create it based on input id
+        if($this->_order === null){
+            $this->_order = Order::model()->findbyPk($order_id);
+            if($this->_order === null){
+                throw new CHttpException(404,'The requested order does not exist.');
+            }
+        }
+
+        return $this->_order;
+    }
+
+    /**
+    * In-class defined filter method, configured for use in the above
+    filters() method
+    * It is called before the actionCreate() action method is run in
+    order to ensure a proper order context
+    */
+    public function filterOrderContext($filterChain){
+        //set the project identifier based on either the GET or POST input
+        //request variables, since we allow both types for our actions
+        $order_id = null;
+        if(isset($_GET['order_id']))
+            $order_id = $_GET['order_id'];
+        else
+            if(isset($_POST['order_id']))
+                $order_id = $_POST['order_id'];
+
+        $this->loadOrder($order_id);
+
+        //complete the running of other filters and execute the requested action
+        $filterChain->run();
     }
 }

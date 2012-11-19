@@ -15,10 +15,10 @@ class OrderController extends Controller
 	 */
 	public function filters()
 	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-            'registryContext + create index giftWrapping print process' //check to ensure valid project context
-		);
+            return array(
+                'accessControl', // perform access control for CRUD operations
+                'registryContext + create index giftWrapping print process' //check to ensure valid project context
+            );
 	}
 
 	/**
@@ -515,7 +515,6 @@ class OrderController extends Controller
         $this->layout = "column_left";
 
         // Create the new order
-        // TODO: Check if a redemption order already exists
         $criteria = new CDbCriteria;
         $criteria->condition = "registry_id = " . $this->_registry->id . " and type = 'redeem'";
         $modelOrder = Order::model()->find($criteria);

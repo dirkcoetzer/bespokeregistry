@@ -10,6 +10,7 @@
  * @property integer $qty
  * @property string $price
  * @property string $type
+ * @property integer $stock
  *
  * The followings are the available model relations:
  * @property Order $order
@@ -42,7 +43,7 @@ class OrderDetails extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('order_id, product_id, price', 'required'),
-			array('order_id, product_id, qty', 'numerical', 'integerOnly'=>true),
+			array('order_id, product_id, qty, stock', 'numerical', 'integerOnly'=>true),
 			array('price', 'length', 'max'=>10),
 			array('type', 'length', 'max'=>12),
 			// The following rule is used by search().

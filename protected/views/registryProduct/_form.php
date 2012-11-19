@@ -21,10 +21,10 @@
 		<?php echo $form->error($model,'price'); ?>
 	</div>
 
-    <div class="row">
-		<?php echo $form->labelEx($model,'contribution_item'); ?>
-		<?php echo $form->dropDownList($model,'contribution_item',array(0 => "No", 1 => "Yes")); ?>
-		<?php echo $form->error($model,'contribution'); ?>
+        <div class="row">
+            <?php echo $form->labelEx($model,'contribution_item'); ?>
+            <?php echo $form->dropDownList($model,'contribution_item',array(0 => "No", 1 => "Yes")); ?>
+            <?php echo $form->error($model,'contribution'); ?>
 	</div>
     
 	<div class="row">
