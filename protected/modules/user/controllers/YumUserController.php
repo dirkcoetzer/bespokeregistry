@@ -15,7 +15,7 @@ class YumUserController extends YumController {
 					'users'=>array('@'),
 					),
 				array('allow',
-					'actions'=>array('admin','delete','create','update', 'list', 'assign', 'generateData', 'csv'),
+					'actions'=>array('admin','delete','create','update', 'list', 'assign', 'generateData', 'csv', 'ajaxFind'),
                     'expression' => 'Yii::app()->user->isAdmin()'
 					),
 				array('allow',
@@ -388,4 +388,12 @@ class YumUserController extends YumController {
 		return $this->_model;
 	}
 
+    public function actionAjaxFind($id){
+        header('Content-type: application/json');
+        
+        $profile = YumProfile::model()->findByAttributes(array("user_id" => $id));
+	
+        echo CJSON::encode($profile);
+        Yii::app()->end();
+    }
 }

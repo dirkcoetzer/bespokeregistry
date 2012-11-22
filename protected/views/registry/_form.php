@@ -77,3 +77,28 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+
+<script type="text/javascript">
+    $("#Registry_owner_id").change(function(e){
+        var id = $(this).val();
+        
+        var url = "<?php echo $this->createUrl("user/user/ajaxFind/id"); ?>/" + id;
+        console.log(url);
+        
+        $.get(
+          url,
+          function(response){
+              if (response){
+                $("#Registry_email").val(response.email);
+                $("#Registry_mobile").val(response.mobile);
+                //console.log(response);
+              }
+          },
+          'json'
+        );
+
+
+        return false;
+    });
+</script>
