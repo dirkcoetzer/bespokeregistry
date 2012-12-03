@@ -209,15 +209,16 @@ class TransactionController extends Controller
             'maskedCardNumber' => $_GET['MaskedCardNumber'],
         );
         $body = Yii::app()->controller->renderPartial("//mail/guest_invoice", $params, true);
-        if (Yii::app()->params['debugEmails'])
+        if (Yii::app()->params['debugEmails'] || $modelOrder->email == "")
             Yii::app()->mailer->AddAddress(Yii::app()->params['adminEmail']);
         else
             Yii::app()->mailer->AddAddress($modelOrder->email);
 
+        
         Yii::app()->mailer->Body = $body;
         Yii::app()->mailer->Send();
 
-        // Send the notification email to the couple on their first successful purchase
+        // Send the notification email to the couple
         Yii::app()->mailer->clearAddresses();
         Yii::app()->mailer->IsSMTP();
         Yii::app()->mailer->IsHTML(true);
@@ -227,7 +228,7 @@ class TransactionController extends Controller
             'order' => $modelOrder,
         );
         $body = Yii::app()->controller->renderPartial("//mail/approved_transaction", $params, true);
-        if (Yii::app()->params['debugEmails'])
+        if (Yii::app()->params['debugEmails'] || $modelOrder->registry->owner->profile->email)
             Yii::app()->mailer->AddAddress(Yii::app()->params['adminEmail']);
         else
             Yii::app()->mailer->AddAddress($modelOrder->registry->owner->profile->email);
