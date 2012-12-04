@@ -183,7 +183,7 @@ class TransactionController extends Controller
 
         $modelOrder->status = 'processed';
         $modelOrder->save();
-
+        
         //Check if this was a client payment
         if ($modelOrder->type == 'payment'){
             $o = Order::model()->findByAttributes(array('registry_id' => $modelOrder->registry_id, 'type' => 'redeem', 'status' => 'payment'));
@@ -191,7 +191,8 @@ class TransactionController extends Controller
                 $o->status = 'processed';
                 $o->save(false);
             }
-
+            
+            // Load the registry
             $r = Registry::model()->findByPk($modelOrder->registry_id);
             if ($r){
                 $r->status_id = 0;
@@ -217,23 +218,28 @@ class TransactionController extends Controller
         Yii::app()->mailer->Body = $body;
         Yii::app()->mailer->Send();
 
-        // Send the notification email to the couple
-        Yii::app()->mailer->clearAddresses();
-        Yii::app()->mailer->IsSMTP();
-        Yii::app()->mailer->IsHTML(true);
-        Yii::app()->mailer->Subject = 'Bespoke Registry: Approved Transaction';
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("registry_id = " . $modelOrder->registry_id);
+        $criteria->addCondition("status = 'processed'");
+        if (Order::model()->count($criteria) == 1){
+            // Send the notification email to the couple
+            Yii::app()->mailer->clearAddresses();
+            Yii::app()->mailer->IsSMTP();
+            Yii::app()->mailer->IsHTML(true);
+            Yii::app()->mailer->Subject = 'Bespoke Registry: Approved Transaction';
 
-        $params = array(
-            'order' => $modelOrder,
-        );
-        $body = Yii::app()->controller->renderPartial("//mail/approved_transaction", $params, true);
-        if (Yii::app()->params['debugEmails'] || $modelOrder->registry->owner->profile->email)
-            Yii::app()->mailer->AddAddress(Yii::app()->params['adminEmail']);
-        else
-            Yii::app()->mailer->AddAddress($modelOrder->registry->owner->profile->email);
+            $params = array(
+                'order' => $modelOrder,
+            );
+            $body = Yii::app()->controller->renderPartial("//mail/approved_transaction", $params, true);
+            if (Yii::app()->params['debugEmails'] || $modelOrder->registry->owner->profile->email)
+                Yii::app()->mailer->AddAddress(Yii::app()->params['adminEmail']);
+            else
+                Yii::app()->mailer->AddAddress($modelOrder->registry->owner->profile->email);
 
-        Yii::app()->mailer->Body = $body;
-        Yii::app()->mailer->Send();
+            Yii::app()->mailer->Body = $body;
+            Yii::app()->mailer->Send();
+        }
         
         // Send an email to the admin contact with the transaction details.
         $body = Yii::app()->controller->renderPartial("//mail/approved_transaction_admin", $params, true);
