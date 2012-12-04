@@ -42,29 +42,34 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'id',
-		array(
-            'name' => 'image_thumb',
-            'type' => 'html',
-            'value' => 'CHtml::image("/".$data->image,"",array("style"=>"width:48px;height:48px;"))'
-        ),
-        'title',
-		array(
-            'name' => 'event_date',
-            'value' => 'date("Y-m-d",$data->event_date)',
-        ),
-		'email',
-		/*
-		'mobile_phone',
-		'home_phone',
-		'address',
-		'created_by',
-		'created_date',
-		'modified_by',
-		'modified_date',
-		*/
-		array(
-			'class'=>'CButtonColumn',
-		),
+            'id',
+            array(
+                'name' => 'owner_id',
+                'type' => 'raw',
+                'value' => 'CHtml::link($data->owner_id, Yii::app()->createUrl("/user/user/view/id/".$data->owner_id))'
+            ),
+            array(
+                'name' => 'image_thumb',
+                'type' => 'html',
+                'value' => 'CHtml::image("/".$data->image,"",array("style"=>"width:48px;height:48px;"))'
+            ),
+            'title',
+                    array(
+                'name' => 'event_date',
+                'value' => 'date("Y-m-d",$data->event_date)',
+            ),
+            'email',
+            /*
+            'mobile_phone',
+            'home_phone',
+            'address',
+            'created_by',
+            'created_date',
+            'modified_by',
+            'modified_date',
+            */
+            array(
+                    'class'=>'CButtonColumn',
+            ),
 	),
 )); ?>

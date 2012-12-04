@@ -213,7 +213,6 @@ class TransactionController extends Controller
             Yii::app()->mailer->AddAddress(Yii::app()->params['adminEmail']);
         else
             Yii::app()->mailer->AddAddress($modelOrder->email);
-
         
         Yii::app()->mailer->Body = $body;
         Yii::app()->mailer->Send();
@@ -242,7 +241,7 @@ class TransactionController extends Controller
         Yii::app()->mailer->AddAddress(Yii::app()->params['adminEmail']);
         Yii::app()->mailer->Body = $body;
         Yii::app()->mailer->Send();
-
+        
         // Save the transaction data
         $model = new Transaction;
         $model->order_id = $_REQUEST["m_1"];
