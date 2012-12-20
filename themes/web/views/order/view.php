@@ -105,6 +105,6 @@ $this->menu=array(
     <!-- <input type="hidden" name="m_9" value="z"> -->
     <!-- <input type="hidden" name="m_10" value="z"> -->
     <!-- <input type="submit" class="proceed float-r" value="Pay by Credit Card"> -->
-    <a href="#" id="vcs-submit" class="proceed float-r"></a> <a href="<?php echo $this->createUrl("registryProduct/browse", array("rid" => $model->registry_id)); ?>" class="back-to-list float-r"></a>
+    <a href="#" id="vcs-submit" class="proceed float-r"></a>
 </form>
 <br class="clear" />

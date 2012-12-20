@@ -178,6 +178,7 @@ class TransactionController extends Controller
         $this->layout = "column_left";
             
         $modelOrder = Order::model()->findByPk($_REQUEST["m_1"]);
+        
         if (!$modelOrder)
             throw new CHttpException(404,'The requested order does not exist.');
 
@@ -218,6 +219,7 @@ class TransactionController extends Controller
         Yii::app()->mailer->Body = $body;
         Yii::app()->mailer->Send();
 
+        // Send the client a notification of the first transaction on their registry
         $criteria = new CDbCriteria;
         $criteria->addCondition("registry_id = " . $modelOrder->registry_id);
         $criteria->addCondition("status = 'processed'");
@@ -232,11 +234,13 @@ class TransactionController extends Controller
                 'order' => $modelOrder,
             );
             $body = Yii::app()->controller->renderPartial("//mail/approved_transaction", $params, true);
-            if (Yii::app()->params['debugEmails'] || $modelOrder->registry->owner->profile->email)
+            $recipientEmail = ($modelOrder->registry->owner->profile->email ? $modelOrder->registry->owner->profile->email : $modelOrder->registry->email);
+            if (Yii::app()->params['debugEmails'] || $recipientEmail)
                 Yii::app()->mailer->AddAddress(Yii::app()->params['adminEmail']);
-            else
-                Yii::app()->mailer->AddAddress($modelOrder->registry->owner->profile->email);
-
+            else{
+                
+                Yii::app()->mailer->AddAddress($recipientEmail);
+            }
             Yii::app()->mailer->Body = $body;
             Yii::app()->mailer->Send();
         }
