@@ -14,6 +14,8 @@
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jsapi.js"></script>
 
 <link type="text/css"  href="<?php echo Yii::app()->theme->baseUrl; ?>/css/screen.css" rel="stylesheet"media="all" />
+<link type="text/css"  href="<?php echo Yii::app()->theme->baseUrl; ?>/css/overrides.css" rel="stylesheet"media="all" />
+
 	<script type="text/javascript">
 		Cufon.set('fontFamily', 'Gotham Book').replace('#menu', {hover: true});
 

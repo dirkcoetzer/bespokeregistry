@@ -17,7 +17,7 @@ class OrderController extends Controller
 	{
             return array(
                 'accessControl', // perform access control for CRUD operations
-                'registryContext + create index giftWrapping print process' //check to ensure valid project context
+                'registryContext + message create index giftWrapping print process' //check to ensure valid project context
             );
 	}
 
@@ -30,7 +30,7 @@ class OrderController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('view','queueOrderDetails','unQueueOrderDetails','summary','create','cancelled','declined','approved','giftWrapping','thankYouSent', 'print'),
+				'actions'=>array('view','queueOrderDetails','unQueueOrderDetails','summary','message','checkout','create','cancelled','declined','approved','giftWrapping','thankYouSent', 'print'),
 				'users'=>array('*'),
 			),
             array(
@@ -66,7 +66,56 @@ class OrderController extends Controller
             'balance'=>$balance,
 		));
 	}
-
+        
+        public function actionMessage(){
+            $this->layout = "column_left";
+            
+            $model = new OrderMessageForm();
+            
+            if ($_POST["OrderMessageForm"]){
+                $model->attributes = $_POST["OrderMessageForm"];
+                
+                if ($model->validate()){
+                    $_SESSION["Order"][$this->_registry->id]["message"] = $_POST["OrderMessageForm"]["message"];
+                    $_SESSION["Order"][$this->_registry->id]["first_name"] = $_POST["OrderMessageForm"]["first_name"];
+                    $_SESSION["Order"][$this->_registry->id]["last_name"] = $_POST["OrderMessageForm"]["last_name"];
+                    $_SESSION["Order"][$this->_registry->id]["mobile_phone"] = $_POST["OrderMessageForm"]["mobile_phone"];
+                    $_SESSION["Order"][$this->_registry->id]["email"] = $_POST["OrderMessageForm"]["email"];
+                    $_SESSION["Order"][$this->_registry->id]["street"] = $_POST["OrderMessageForm"]["street"];
+                    $_SESSION["Order"][$this->_registry->id]["city"] = $_POST["OrderMessageForm"]["city"];
+                    $_SESSION["Order"][$this->_registry->id]["suburb"] = $_POST["OrderMessageForm"]["suburb"];
+                    $_SESSION["Order"][$this->_registry->id]["postal_code"] = $_POST["OrderMessageForm"]["postal_code"];
+                    
+                    $this->redirect("/order/checkout?rid=".$this->_registry->id);
+                }
+            }
+            
+            $model->attributes = $_SESSION["Order"][$this->_registry->id];
+            $this->render("message", array(
+                "model" => $model,
+                "registry" => $this->_registry,
+            ));
+        }
+        
+        public function actionCheckout(){
+            $this->layout = "column_left";
+            $model = new OrderCheckoutForm;
+            
+            if ($_POST["OrderCheckoutForm"]){
+               $model->attributes = $_POST["OrderCheckoutForm"];
+               
+               if ($model->validate()){
+                   print 'handle checkout via vcs';
+                   exit;
+               }
+            }
+            
+            $this->render("checkout", array(
+                'model' => $model,
+                'registry' => $this->_registry,
+            ));
+        }
+        
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.

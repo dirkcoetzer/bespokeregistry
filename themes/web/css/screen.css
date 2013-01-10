@@ -224,7 +224,7 @@ span.account-balance {line-height: 17px; display: inline-block; padding: 10px 0 
 span.balance {line-height: 20px; display: inline-block; padding: 15px 0 0 20px; height: 30px; float: left;}
 input.order-balance {height: 30px; display: inline-block; width: 65px; margin: 0 0 0 10px; font-size: 15px; color: #2B2B2B; padding: 10px;float: left;}
 
-.order-details-sections {padding: 20px 0 10px 0; min-height: 645px;}
+.order-details-sections {padding: 20px 0 10px 0; min-height: 380px;}
 .order-details-sections label {width: 100px; display: inline-block; padding-bottom: 20px;}
 .order-details-sections label.message {width: 60px; display: inline-block;}
 

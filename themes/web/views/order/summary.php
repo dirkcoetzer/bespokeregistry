@@ -10,9 +10,18 @@ $this->menu=array(
 <div class="breadcrumb">
     <a href="/">Home</a> > <a href="<?php echo $this->createUrl("registry/find"); ?>">Find Registry</a> > <a href="<?php echo $this->createUrl("registryProduct/browse", array("rid" => $registry->id)); ?>">Search Results</a> > <span class="current">Buy a Gift</span>
 </div>
+
+<h2>My Cart</h2>
+<p>Your selected gifts will be delivered to the couple after their wedding.  In the unlikely event we cannot obtain a selected gift, the couple may choose an alternative.</p>
+<div id="checkout-progress">
+<div class="step1 active">1. My Cart</div>
+<div class="step2">2. Order Details</div>
+<div class="step3">3. My Payment</div>
+<div class="step4">4. Confirmation</div>
+</div>
+<br /><br /><br />
+
 <div style="min-height: 890px;">
-<h2>Gift Selection</h2>
-<p>Your selected gifts will be dispatched to the couple in accordance with their instructions. Check the Gift Wrapping option for beautifully wrapped gifts. In the unlikley event we cannot obtain a selected gift, the couple may choose an alternative.</p>
 <table class="order-table" border="0" cellspacing="0" cellpadding="0">
   <tr class="table-heading pixel-bottom">
     <td><span class="cat-heading">You have selected the following gifts</span></td>
@@ -57,9 +66,12 @@ $this->menu=array(
     </tr>
 </table>
 
-<a href="<?php echo $this->createUrl("order/create", array("rid" => $registry->id)); ?>" class="proceed float-r"></a> <a href="<?php echo $this->createUrl("registryProduct/browse", array("rid" => $registry->id)); ?>" class="back-to-list float-r"></a>
+<a href="<?php echo $this->createUrl("order/message", array("rid" => $registry->id)); ?>" class="secure-checkout float-r"></a>
+<a class="link-continue-shopping float_r" href="<?php echo $this->createUrl("registryProduct/browse", array("rid" => $registry->id)); ?>">Continue Shopping</a>
+<br />
+<img class="float-l" style="margin: 0 0 0 20px;" src="<?php echo Yii::app()->theme->baseUrl; ?>/images/payment-logos.png" alt="Payment Options">
+<br class="clear" />
 
-<div class="clear"></div>
 </div>
 <script type="text/javascript" >
     $("#gift_wrapping").click(function(){
