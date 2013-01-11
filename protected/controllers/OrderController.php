@@ -17,7 +17,7 @@ class OrderController extends Controller
 	{
             return array(
                 'accessControl', // perform access control for CRUD operations
-                'registryContext + message create index giftWrapping print process' //check to ensure valid project context
+                'registryContext + message checkout create index giftWrapping print process' //check to ensure valid project context
             );
 	}
 
@@ -30,7 +30,7 @@ class OrderController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('view','queueOrderDetails','unQueueOrderDetails','summary','message','checkout','create','cancelled','declined','approved','giftWrapping','thankYouSent', 'print'),
+				'actions'=>array('view','queueOrderDetails','unQueueOrderDetails','summary','message','checkout','confirmation','create','cancelled','declined','approved','giftWrapping','thankYouSent', 'print'),
 				'users'=>array('*'),
 			),
             array(
@@ -105,8 +105,73 @@ class OrderController extends Controller
                $model->attributes = $_POST["OrderCheckoutForm"];
                
                if ($model->validate()){
-                   print 'handle checkout via vcs';
-                   exit;
+                   $orderModel = new Order;
+                   // Create the order in the database
+                   $orderModel->attributes = $_SESSION["Order"][$this->_registry->id];
+                   $orderModel->registry_id = $this->_registry->id;
+                   $orderModel->thank_you_sent = 0;
+                   $orderModel->created_date = time();
+                   
+                   if ($orderModel->save()){
+                        $xmlMessage = "
+                        <?xml version='1.0' ?>
+                             <AuthorisationRequest>
+                             <UserId>1234</UserId>
+                             <Reference>123xyz</Reference>
+                             <Description>Contribution to ".$orderModel->registry->title."</Description>
+                             <Amount>".Order::model()->getOrderTotal($orderModel->id)."</Amount>
+                             <CardholderName>".$_POST['OrderCheckoutForm']['name']."</CardholderName>
+                             <CardNumber>".$_POST['OrderCheckoutForm']['card_number']."</CardNumber>
+                             <ExpiryMonth>".$_POST['OrderCheckoutForm']['expiry_date_month']."</ExpiryMonth>
+                             <ExpiryYear>".$_POST['OrderCheckoutForm']['expiry_date_year']."</ExpiryYear>
+                             <CardValidationCode>".$_POST['OrderCheckoutForm']['csv_number']."</CardValidationCode>
+                             <CardholderEmail>".$_SESSION["Order"][$this->_registry->id]["email"]."</CardholderEmail>
+                             <m_1>".$orderModel->id."</m_1>
+                             <m_2>x</m_2>
+                             <m_3>x</m_3>
+                             <m_4>x</m_4>
+                             <m_5>x</m_5>
+                             <m_6>x</m_6>
+                             <m_7>x</m_7>
+                             <m_8>x</m_8>
+                             <m_9>x</m_9>
+                             <m_10>x</m_10>
+                             </AuthorisationRequest>
+                         ";
+
+                         $url = "https://www.vcs.co.za/vvonline/ccxmlauth.asp";
+
+                         $curl = curl_init();
+                         curl_setopt($curl, CURLOPT_URL, $url);
+                         curl_setopt($curl, CURLOPT_HEADER, 1);
+                         //curl_setopt($curl, CURLOPT_COOKIE, 'session="t6sVhAqrkZ4ZF2Uis41w376StJM=?_fresh=STAxCi4=&_id=UydceGEyPlx4MGU5XHgwM0d5XHgwMTRceGFiS1x4YTdceDkzXHhhNVx4OGNceDA1JwpwMQou&user_id=VnVzZXIwMDFAZG9tLmNvbQpwMQou"');
+                         //curl_setopt($curl, CURLOPT_COOKIEJAR, Yii::app()->getRuntimePath()."/uploads/cookies.txt");
+                         //curl_setopt($curl, CURLOPT_COOKIEFILE, Yii::app()->getRuntimePath()."/uploads/cookies.txt");
+                         // curl_setopt($curl, CURLOPT_PROXY, "http://proxycpt.media24.com:80/");
+                         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                         curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                         curl_setopt($curl, CURLOPT_POST, 1);
+                         curl_setopt($curl, CURLOPT_POSTFIELDS, "xmlMessage=".$xmlMessage);
+                         // do curl request and return JSON oembed response
+                         $response = curl_exec($curl);
+                         $error = curl_error($curl);
+                         $info = curl_getinfo($curl);
+                         $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+                         $header = substr($response, 0, $header_size);
+                         $body = substr($response, $header_size);    
+                         curl_close($curl);            
+                         $debug = true;
+                         if ($debug){
+                             Yii::log($url, "error");
+                             //Yii::log(var_export($error, true), "error");
+                             //Yii::log(var_export($response, true), "error");
+                             //Yii::log(var_export($info, true), "error");
+                             //Yii::log(var_export($header, true), "error");
+                             Yii::log(var_export($body, true), "error");                         
+                         }
+                    }
+                    $this->redirect("/order/confirmation");
                }
             }
             
@@ -116,6 +181,10 @@ class OrderController extends Controller
             ));
         }
         
+        public function actionConfirmation(){
+            $this->layout = "column_left";
+            $this->render("confirmation");            
+        }
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.

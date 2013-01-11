@@ -10,7 +10,7 @@ class OrderCheckoutForm extends CFormModel
     public $name;
     public $card_type;
     public $card_number;
-    public $csv_number;
+    public $cvv_number;
     public $expiration_date_year;
     public $expiration_date_month;
     
@@ -23,7 +23,7 @@ class OrderCheckoutForm extends CFormModel
     {
         return array(
             // username and password are required
-            array('name, card_type, card_number, csv_number, expiration_date_year, expiration_date_month', 'required'),                            
+            array('name, card_type, card_number, cvv_number, expiration_date_year, expiration_date_month', 'required'),                            
         );
     }
 

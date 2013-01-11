@@ -49,7 +49,7 @@ $this->menu=array(
         <br />
         
         <label class="message">CSV Number *</label>
-        <?php echo $form->textField($model,'csv_number', array('maxlength'=>3)); ?>
+        <?php echo $form->textField($model,'cvv_number', array('maxlength'=>3)); ?>
         
         <img style="margin: 10px 0 -12px 20px;" src="<?php echo Yii::app()->theme->baseUrl; ?>/images/3-digits.png">
         <br />
