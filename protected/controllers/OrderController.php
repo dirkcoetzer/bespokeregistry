@@ -105,7 +105,6 @@ class OrderController extends Controller
                $model->attributes = $_POST["OrderCheckoutForm"];
                
                if ($model->validate()){
-                   print "model validated<br/>";
                    if ($model->order_id){
                        $modelOrder = $this->loadModel($model->order_id);
                        $orderTotal = $modelOrder->getOrderTotal($modelOrder->id);
