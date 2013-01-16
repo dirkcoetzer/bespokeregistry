@@ -17,7 +17,7 @@ class OrderController extends Controller
 	{
             return array(
                 'accessControl', // perform access control for CRUD operations
-                'registryContext + message checkout create index giftWrapping print process' //check to ensure valid project context
+                'registryContext + summary message checkout create index giftWrapping print process' //check to ensure valid project context
             );
 	}
 
@@ -88,6 +88,10 @@ class OrderController extends Controller
                     
                     $this->redirect("/order/checkout?rid=".$this->_registry->id);
                 }
+            }
+            
+            if (!isset($_SESSION["Order"][$this->_registry->id])){
+               throw new CHttpException(404,'Your session has expired.'); 
             }
             
             $model->attributes = $_SESSION["Order"][$this->_registry->id];
@@ -204,7 +208,7 @@ class OrderController extends Controller
                         }
                         
                         // Unset the session here. You don't need the session order details as the order has been processed.
-                        // TODO: unset($_SESSION["Order"][$this->_registry->id]);
+                        unset($_SESSION["Order"][$this->_registry->id]);
                         
                         // Send the guest invoice to the guest
                         Yii::app()->mailer->IsSMTP();
@@ -289,6 +293,10 @@ class OrderController extends Controller
                     // End: Handle Response
                     $this->redirect("/order/confirmation");
                }
+            }
+            
+            if (!isset($_SESSION["Order"][$this->_registry->id])){
+               throw new CHttpException(404,'Your session has expired.'); 
             }
             
             $model->order_id = $id;
@@ -531,22 +539,24 @@ class OrderController extends Controller
     }
 
     /**
-	 * View a summary of what you have selected.
-	 */
-	public function actionSummary(){
+    * View a summary of what you have selected.
+    */
+   public function actionSummary(){
         $this->layout = "column_left";
-        $registry = Registry::model()->findByPk($_GET["rid"]);
-
-        if (count($_SESSION["Order"][$registry->id]["OrderDetails"]) == 0)
-            $this->redirect(array('registryProduct/browse','rid'=>$registry->id));
+        
+        if (!isset($_SESSION["Order"][$this->_registry->id])){
+           throw new CHttpException(404,'Your session has expired.'); 
+        }
+        if (count($_SESSION["Order"][$this->_registry->id]["OrderDetails"]) == 0)
+            $this->redirect(array('registryProduct/browse','rid'=>$this->_registry->id));
 
         $this->render(
             'summary',
             array(
-                'registry' => $registry
+                'registry' => $this->_registry
             )
         );
-	}
+    }
 
     /**
     * Protected method to load the associated Registry model class
