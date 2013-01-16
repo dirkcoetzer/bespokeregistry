@@ -279,11 +279,10 @@ class OrderController extends Controller
                         $modelTransaction->save(false);
                         
                         Yii::log(var_export($modelTransaction->attributes, true), "error", "controllers.OrderController.checkout");
-                        
+                        Yii::app()->user->setFlash('success', 'Your transaction has been successfully processed.');
                         
                     }else{
-                        print "Failed";
-                        Yii::app()->end();
+                        Yii::app()->user->setFlash('error', 'Your transaction failed with the following response:<br/>'.$xmlResponse->Response);
                         
                     }
 
@@ -507,9 +506,13 @@ class OrderController extends Controller
                 'type' => 'wrapping',
             );
             
+            $_SESSION["Order"][$this->_registry->id]["gift_wrapping"] = 1;
+            $_SESSION["Order"][$this->_registry->id]["orderTotal"] = $_SESSION["Order"][$this->_registry->id]["orderTotal"] + 20;
             $message = "We will be adding gift wrapping to your order.";
         }else{
-            unset($_SESSION["Order"][$modelRegistryProduct->registry->id]["OrderDetails"][12]);
+            $_SESSION["Order"][$this->_registry->id]["gift_wrapping"] = 0;
+            $_SESSION["Order"][$this->_registry->id]["orderTotal"] = $_SESSION["Order"][$this->_registry->id]["orderTotal"] - 20;
+            unset($_SESSION["Order"][$this->_registry->id]["OrderDetails"][12]);
             
             $message = "You have chosen not to add gift wrapping to your order.";
         }

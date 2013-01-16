@@ -11,7 +11,14 @@ $this->menu=array(
 <div class="breadcrumb"><a href="#">Home</a> > <a href="#">Find Registry</a> > <a href="#">Search Results</a> > <span class="current">Buy a Gift</span></div>
 
 <h2>Confirmation</h2>
-<h3>Your Payment has been processed.</h3>
+<?php
+    foreach(Yii::app()->user->getFlashes() as $key => $message) {
+    ?>
+        <h3 class="<?php echo $key; ?>" ><?php echo $message; ?></h3>
+    <?php
+    }
+?>
+
 <p>Thank you!</p>
 <div id="checkout-progress">
 <div class="step1 completed">1. My Cart</div>

@@ -59,7 +59,7 @@ $this->menu=array(
             <img src="<?php echo Yii::app()->theme->baseUrl; ?>/images/gift-wrapping.jpg" alt="">Check the Gift Wrapping option below for beautifully wrapped gifts. 
             The cost of the gift wrapping is R20. <br />
             <br />
-            <input type="checkbox" id="gift_wrapping" name="gift_wrapping" value="1" /><label>Please Wrap Gifts</label>
+            <input type="checkbox" id="gift_wrapping" name="gift_wrapping" value="1" <?php echo ($_SESSION["Order"][$registry->id]["gift_wrapping"] == 1 ? "checked='checked'" : ""); ?> /><label>Please Wrap Gifts</label>
         </td>
     </tr>
     <tr class="gift-total pixel-bottom">
