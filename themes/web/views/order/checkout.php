@@ -60,6 +60,8 @@ $this->menu=array(
         <?php echo $form->dropDownList($model,'expiration_date_year', Order::model()->getYearOptions(), array("prompt" => "- Year -")); ?> 
         <br />
         <br />
+        <?php echo $form->hiddenField($model,'order_id'); ?>
+        
         <input type="checkbox" checked="checked" > I agree with the <a href="#">Terms & Conditions</a> 
 
     </div>

@@ -7,104 +7,75 @@ $this->menu=array(
 	array('label'=>'Terms and Conditions', 'url'=>array('site/termsandconditions')),
 );
 ?>
-<div class="breadcrumb"><a href="/">Home</a> > <a href="#"> My Registry</a> > <span class="current">Buy a Gift</span></div>
+<div class="breadcrumb">
+    <a href="/">Home</a> > <a href="<?php echo $this->createUrl("registry/find"); ?>">Find Registry</a> > <a href="<?php echo $this->createUrl("registryProduct/browse", array("rid" => $registry->id)); ?>">Search Results</a> > <span class="current">Buy a Gift</span>
+</div>
 
-<h2>Order Summary</h2>
-<p>Please make sure the details are correct before proceeding to pay for your order.</p>
+<h2>My Cart</h2>
+<p>Your selected gifts will be delivered to the couple after their wedding.  In the unlikely event we cannot obtain a selected gift, the couple may choose an alternative.</p>
+<div id="checkout-progress">
+<div class="step1 active">1. My Cart</div>
+<div class="step2">2. Order Details</div>
+<div class="step3">3. My Payment</div>
+<div class="step4">4. Confirmation</div>
+</div>
+<br /><br /><br />
 
+<div style="min-height: 890px;">
 <table class="order-table" border="0" cellspacing="0" cellpadding="0">
-
-  <?php if ($model->type != 'payment'){ ?>
-  <tr class="table-heading pixel-bottom border-right">
-    <td colspan="3"><span class="cat-heading">Order Summary Details</span></td>
-  </tr>
-    <tr class="product-row pixel-bottom">
-    <td class="border-right" colspan="3">
-
-    	<div class="order-summary-left-col">
-    	<span class="label">Your Name</span><br />
-    	<span class="value"><?php echo $model->first_name . " " . $model->last_name; ?></span><br />
-    	<span class="label">Your Address</span><br />
-    	<span class="value"><?php echo $model->street; ?></span><br />
-    	<span class="label">Town</span><br />
-    	<span class="value"><?php echo $model->city; ?></span><br />
-    	<span class="label">Post Code</span><br />
-    	<span class="value"><?php echo $model->postal_code; ?></span>
-
-    	</div>
-
-    	<div class="order-summary-right-col">
-            <span class="label">Your Message</span><br />
-            <p>
-            <?php echo nl2br($model->message); ?>
-            </p>
-            <br />
-    	</div>
-  </td>
-  </tr>
-  <?php } ?>
   <tr class="table-heading pixel-bottom">
-    <td><span class="cat-heading">Chosen Gifts</span></td>
+    <td><span class="cat-heading">You have selected the following gifts</span></td>
+    <td>Remove</td>
     <td>Quantity</td>
     <td>Price</td>
   </tr>
-  <?php $orderTotal = 0; ?>
-  <?php if ($model->orderDetails){ ?>
-      <?php $orderTotal = 0; ?>
-        <?php foreach ($model->orderDetails as $orderDetail){ ?>
-          <?php $orderTotal = $orderTotal + ($orderDetail->qty * $orderDetail->price); ?>
-          <tr class="product-row pixel-bottom">
+  <?php if ($model){ ?>
+    <?php $orderTotal = 0; ?>
+    <?php foreach ($model->orderDetails as $orderDetail){ ?>
+        <?php $orderTotal = $orderTotal + ($orderDetail->qty * $orderDetail->price); ?>
+        <tr class="product-row pixel-bottom">
             <td>
-                <img src="/<?php echo $orderDetail->product->image_thumb; ?>" alt="<?php echo $orderDetail->product->title; ?>" width="65px" /><?php echo $orderDetail->product->title; ?><br />
+                <img src="/<?php echo $orderDetail->product->image_thumb; ?>" alt="<?php echo $orderDetail->product->title; ?>" width="65px" />
+                <?php echo $orderDetail->product->title; ?><br />
                 <?php echo $orderDetail->product->description; ?>
+            </td>
+            <td >
+                &nbsp;
             </td>
             <td><?php echo $orderDetail->qty; ?></td>
             <td>R <?php echo $orderDetail->price; ?></td>
-          </tr>
-      <?php } ?>
+        </tr>
+    <?php } ?>
   <?php } ?>
 
-  <?php if ($model->gift_wrapping) { ?>
-      <?php $orderTotal = $orderTotal + 20.00; ?>
-      <tr class="product-row pixel-bottom">
-        <td>Gift Wrapping</td>
-        <td>&nbsp;</td>
-        <td>R20.00</td>
-      </tr>
-  <?php } ?>
-  <tr class="gift-total pixel-bottom">
-    <td colspan="3">Total <span class="total-price">R <?php echo number_format($orderTotal, 2); ?></span></td>
+    
+    <tr class="gift-total pixel-bottom">
+        <td colspan="4">Total <span class="total-price">R <?php echo $orderTotal; ?></span></td>
     </tr>
 </table>
-<form id="vcs-form" name="vcs-form" method="POST" action="https://www.vcs.co.za/vvonline/ccform.asp">
-    <input type="hidden" name="p1" value="1688">
-    <input type="hidden" name="p2" value="<?php echo $model->id; ?>">
-    <input type="hidden" name="p3" value="Contribution to <?php echo $model->registry->title; ?>">
-    <input type="hidden" name="p4" value="<?php echo $orderTotal; ?>">
-    <input type="hidden" name="p5" value="zar">
-    <!-- <input type="hidden" name="p6" value="f"> -->
-    <!-- <input type="hidden" name="p7" value="g"> -->
-    <!-- <input type="hidden" name="p8" value="h"> -->
-    <!-- <input type="hidden" name="p9" value="i"> -->
-    <input type="hidden" name="p10" value="<?php echo Yii::app()->request->hostInfo . $this->createUrl("transaction/cancelled", array("order_id" => $model->id)); ?>">
-    <!-- <input type="hidden" name="p11" value="k"> -->
-    <!-- <input type="hidden" name="p12" value="l"> -->
-    <!-- <input type="hidden" name="p13" value="m"> -->
-    <!-- <input type="hidden" name="Budget" value="n"> -->
-    <!-- <input type="hidden" name="NextOccurDate" value="o"> -->
-    <input type="hidden" name="CardholderEmail" value="<?php echo $model->email; ?>">
-    <!-- <input type="hidden" name="Hash" value="q"> -->
-    <input type="hidden" name="m_1" value="<?php echo $model->id; ?>" />
-    <input type="hidden" name="m_2" value="contribution" />
-    <!-- <input type="hidden" name="m_3" value="z"> -->
-    <!-- <input type="hidden" name="m_4" value="z"> -->
-    <!-- <input type="hidden" name="m_5" value="z"> -->
-    <!-- <input type="hidden" name="m_6" value="z"> -->
-    <!-- <input type="hidden" name="m_7" value="z"> -->
-    <!-- <input type="hidden" name="m_8" value="z"> -->
-    <!-- <input type="hidden" name="m_9" value="z"> -->
-    <!-- <input type="hidden" name="m_10" value="z"> -->
-    <!-- <input type="submit" class="proceed float-r" value="Pay by Credit Card"> -->
-    <a href="#" id="vcs-submit" class="proceed float-r"></a>
-</form>
+
+<a href="<?php echo $this->createUrl("order/checkout", array("id" => $model->id, "rid" => $model->registry->id)); ?>" class="secure-checkout float-r"></a>
+<a class="link-continue-shopping float_r" href="<?php echo $this->createUrl("registryProduct/browse", array("rid" => $registry->id)); ?>">Continue Shopping</a>
+<br />
+<img class="float-l" style="margin: 0 0 0 20px;" src="<?php echo Yii::app()->theme->baseUrl; ?>/images/payment-logos.png" alt="Payment Options">
 <br class="clear" />
+
+</div>
+<script type="text/javascript" >
+
+    $(".remove").click(function(e){
+        e.preventDefault();
+        var url = "<?php echo $this->createUrl("order/unQueueOrderDetails", array("rid" => $registry->id)); ?>";
+        var data = {rpid : $(this).attr("rel")};
+
+        $.post(
+          url,
+          data,
+          function(response){
+             location.reload();
+          },
+          'json'
+        );
+    });
+
+</script>

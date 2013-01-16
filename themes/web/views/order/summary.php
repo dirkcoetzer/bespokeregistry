@@ -46,6 +46,7 @@ $this->menu=array(
             <td>R <?php echo $orderDetail["price"]; ?></td>
         </tr>
     <?php } ?>
+    <?php $_SESSION["Order"][$registry->id]['orderTotal'] = $orderTotal; ?>
   <?php } ?>
 
     <tr class="gift-wrapping-heading pixel-bottom">

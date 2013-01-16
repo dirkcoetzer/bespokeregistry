@@ -97,7 +97,7 @@ class OrderController extends Controller
             ));
         }
         
-        public function actionCheckout(){
+        public function actionCheckout($id = null){
             $this->layout = "column_left";
             $model = new OrderCheckoutForm;
             
@@ -105,76 +105,195 @@ class OrderController extends Controller
                $model->attributes = $_POST["OrderCheckoutForm"];
                
                if ($model->validate()){
-                   $orderModel = new Order;
-                   // Create the order in the database
-                   $orderModel->attributes = $_SESSION["Order"][$this->_registry->id];
-                   $orderModel->registry_id = $this->_registry->id;
-                   $orderModel->thank_you_sent = 0;
-                   $orderModel->created_date = time();
+                   print "model validated<br/>";
+                   if ($model->order_id){
+                       $modelOrder = $this->loadModel($model->order_id);
+                       $orderTotal = $modelOrder->getOrderTotal($modelOrder->id);
+                       
+                   }else{
+                        $modelOrder = new Order;
+                        // Create the order in the database
+                        $modelOrder->attributes = $_SESSION["Order"][$this->_registry->id];
+                        $modelOrder->registry_id = $this->_registry->id;
+                        $modelOrder->thank_you_sent = 0;
+                        $modelOrder->created_date = time();
+                        
+                        $orderTotal = $_SESSION["Order"][$this->_registry->id]["orderTotal"];
+                   }
                    
-                   if ($orderModel->save()){
-                        $xmlMessage = "
-                        <?xml version='1.0' ?>
-                             <AuthorisationRequest>
-                             <UserId>1234</UserId>
-                             <Reference>123xyz</Reference>
-                             <Description>Contribution to ".$orderModel->registry->title."</Description>
-                             <Amount>".Order::model()->getOrderTotal($orderModel->id)."</Amount>
-                             <CardholderName>".$_POST['OrderCheckoutForm']['name']."</CardholderName>
-                             <CardNumber>".$_POST['OrderCheckoutForm']['card_number']."</CardNumber>
-                             <ExpiryMonth>".$_POST['OrderCheckoutForm']['expiry_date_month']."</ExpiryMonth>
-                             <ExpiryYear>".$_POST['OrderCheckoutForm']['expiry_date_year']."</ExpiryYear>
-                             <CardValidationCode>".$_POST['OrderCheckoutForm']['csv_number']."</CardValidationCode>
-                             <CardholderEmail>".$_SESSION["Order"][$this->_registry->id]["email"]."</CardholderEmail>
-                             <m_1>".$orderModel->id."</m_1>
-                             <m_2>x</m_2>
-                             <m_3>x</m_3>
-                             <m_4>x</m_4>
-                             <m_5>x</m_5>
-                             <m_6>x</m_6>
-                             <m_7>x</m_7>
-                             <m_8>x</m_8>
-                             <m_9>x</m_9>
-                             <m_10>x</m_10>
-                             </AuthorisationRequest>
-                         ";
+                    $xmlMessage = "
+                    <?xml version='1.0' ?>
+                         <AuthorisationRequest>
+                         <UserId>4828</UserId>
+                         <Reference>".$modelOrder->created_date."</Reference>
+                         <Description>Contribution to ".$modelOrder->registry->title."</Description>
+                         <Amount>".$orderTotal."</Amount>
+                         <CardholderName>".$_POST['OrderCheckoutForm']['name']."</CardholderName>
+                         <CardNumber>".$_POST['OrderCheckoutForm']['card_number']."</CardNumber>
+                         <ExpiryMonth>".$_POST['OrderCheckoutForm']['expiration_date_month']."</ExpiryMonth>
+                         <ExpiryYear>".$_POST['OrderCheckoutForm']['expiration_date_year']."</ExpiryYear>
+                         <CardValidationCode>".$_POST['OrderCheckoutForm']['cvv_number']."</CardValidationCode>
+                         <CardholderEmail>".$modelOrder->email."</CardholderEmail>
+                         </AuthorisationRequest>
+                     ";
+                    Yii::log($xmlMessage, "error", "controllers.OrderController.checkout");
+                    
+                     $url = "https://www.vcs.co.za/vvonline/ccxmlauth.asp";
 
-                         $url = "https://www.vcs.co.za/vvonline/ccxmlauth.asp";
+                     $curl = curl_init();
+                     curl_setopt($curl, CURLOPT_URL, $url);
+                     curl_setopt($curl, CURLOPT_HEADER, 1);
+                     //curl_setopt($curl, CURLOPT_COOKIE, 'session="t6sVhAqrkZ4ZF2Uis41w376StJM=?_fresh=STAxCi4=&_id=UydceGEyPlx4MGU5XHgwM0d5XHgwMTRceGFiS1x4YTdceDkzXHhhNVx4OGNceDA1JwpwMQou&user_id=VnVzZXIwMDFAZG9tLmNvbQpwMQou"');
+                     //curl_setopt($curl, CURLOPT_COOKIEJAR, Yii::app()->getRuntimePath()."/uploads/cookies.txt");
+                     //curl_setopt($curl, CURLOPT_COOKIEFILE, Yii::app()->getRuntimePath()."/uploads/cookies.txt");
+                     // curl_setopt($curl, CURLOPT_PROXY, "http://proxycpt.media24.com:80/");
+                     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                     curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                     curl_setopt($curl, CURLOPT_POST, 1);
+                     curl_setopt($curl, CURLOPT_POSTFIELDS, "xmlMessage=".urlencode($xmlMessage));
+                     // do curl request and return JSON oembed response
+                     $response = curl_exec($curl);
+                     $error = curl_error($curl);
+                     $info = curl_getinfo($curl);
+                     $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+                     $header = substr($response, 0, $header_size);
+                     $body = substr($response, $header_size);    
+                     curl_close($curl);            
 
-                         $curl = curl_init();
-                         curl_setopt($curl, CURLOPT_URL, $url);
-                         curl_setopt($curl, CURLOPT_HEADER, 1);
-                         //curl_setopt($curl, CURLOPT_COOKIE, 'session="t6sVhAqrkZ4ZF2Uis41w376StJM=?_fresh=STAxCi4=&_id=UydceGEyPlx4MGU5XHgwM0d5XHgwMTRceGFiS1x4YTdceDkzXHhhNVx4OGNceDA1JwpwMQou&user_id=VnVzZXIwMDFAZG9tLmNvbQpwMQou"');
-                         //curl_setopt($curl, CURLOPT_COOKIEJAR, Yii::app()->getRuntimePath()."/uploads/cookies.txt");
-                         //curl_setopt($curl, CURLOPT_COOKIEFILE, Yii::app()->getRuntimePath()."/uploads/cookies.txt");
-                         // curl_setopt($curl, CURLOPT_PROXY, "http://proxycpt.media24.com:80/");
-                         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-                         curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-                         curl_setopt($curl, CURLOPT_POST, 1);
-                         curl_setopt($curl, CURLOPT_POSTFIELDS, "xmlMessage=".$xmlMessage);
-                         // do curl request and return JSON oembed response
-                         $response = curl_exec($curl);
-                         $error = curl_error($curl);
-                         $info = curl_getinfo($curl);
-                         $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-                         $header = substr($response, 0, $header_size);
-                         $body = substr($response, $header_size);    
-                         curl_close($curl);            
-                         $debug = true;
-                         if ($debug){
-                             Yii::log($url, "error");
-                             //Yii::log(var_export($error, true), "error");
-                             //Yii::log(var_export($response, true), "error");
-                             //Yii::log(var_export($info, true), "error");
-                             //Yii::log(var_export($header, true), "error");
-                             Yii::log(var_export($body, true), "error");                         
-                         }
+                    // Debug options 
+                    Yii::log($url, "error");
+                    //Yii::log(var_export($error, true), "error");
+                    //Yii::log(var_export($response, true), "error");
+                    //Yii::log(var_export($info, true), "error");
+                    //Yii::log(var_export($header, true), "error");
+                    Yii::log(var_export($body, true), "error");                         
+
+                    $xmlResponse = simplexml_load_string($body);
+                    Yii::log(var_export($xmlResponse, true), "error", "controllers.OrderController.checkout");
+                    
+                    // Start: Handle Response
+                    if (stristr($xmlResponse->Response, 'APPROVED')){
+                        //Check if this was a client payment
+                        if ($modelOrder->type == 'payment'){
+                            // Load the registry
+                            $r = Registry::model()->findByPk($modelOrder->registry_id);
+                            if ($r){
+                                $r->status_id = 0;
+                                $r->save(false);
+                            }
+                        }
+                        
+                        $modelOrder->status = 'processed';
+                        $modelOrder->save();
+                        Yii::log(var_export($modelOrder->attributes, true), "error", "controllers.OrderController.checkout");
+                        
+                        if (!$model->order_id){
+                            if ($_SESSION["Order"][$this->_registry->id]["OrderDetails"]){
+                                foreach ($_SESSION["Order"][$this->_registry->id]["OrderDetails"] as $key => $orderDetail){
+                                    $modelOrderDetails = new OrderDetails();
+
+                                    $modelOrderDetails->order_id = $modelOrder->id;
+                                    $modelOrderDetails->product_id = $key;
+                                    $modelOrderDetails->qty = $orderDetail["qty"];
+                                    $modelOrderDetails->price = $orderDetail["price"];
+                                    $modelOrderDetails->type = $orderDetail["type"];
+
+                                    $modelOrderDetails->save();
+                                }
+                            }
+                        }
+                        
+                        // Unset the session here. You don't need the session order details as the order has been processed.
+                        // TODO: unset($_SESSION["Order"][$this->_registry->id]);
+                        
+                        // Send the guest invoice to the guest
+                        Yii::app()->mailer->IsSMTP();
+                        Yii::app()->mailer->IsHTML(true);
+                        Yii::app()->mailer->Subject = 'Bespoke Registry: Purchase Invoice';
+
+                        $params = array(
+                            'order' => $modelOrder,
+                            'maskedCardNumber' => $xmlResponse->MaskedCardNumber,
+                        );
+                        $body = Yii::app()->controller->renderPartial("//mail/guest_invoice", $params, true);
+                        if (Yii::app()->params['debugEmails'] || $modelOrder->email == "")
+                            Yii::app()->mailer->AddAddress(Yii::app()->params['adminEmail']);
+                        else
+                            Yii::app()->mailer->AddAddress($modelOrder->email);
+
+                        Yii::app()->mailer->Body = $body;
+                        Yii::app()->mailer->Send();
+                        
+                        // Send the client a notification of the first transaction on their registry
+                        $criteria = new CDbCriteria;
+                        $criteria->addCondition("registry_id = " . $modelOrder->registry_id);
+                        $criteria->addCondition("status = 'processed'");
+                        if (Order::model()->count($criteria) == 1){
+                            // Send the notification email to the couple
+                            Yii::app()->mailer->clearAddresses();
+                            Yii::app()->mailer->IsSMTP();
+                            Yii::app()->mailer->IsHTML(true);
+                            Yii::app()->mailer->Subject = 'Bespoke Registry: Approved Transaction';
+
+                            $params = array(
+                                'order' => $modelOrder,
+                            );
+                            $body = Yii::app()->controller->renderPartial("//mail/approved_transaction", $params, true);
+                            $recipientEmail = ($modelOrder->registry->owner->profile->email ? $modelOrder->registry->owner->profile->email : $modelOrder->registry->email);
+                            if (Yii::app()->params['debugEmails'] || $recipientEmail)
+                                Yii::app()->mailer->AddAddress(Yii::app()->params['adminEmail']);
+                            else{
+
+                                Yii::app()->mailer->AddAddress($recipientEmail);
+                            }
+                            Yii::app()->mailer->Body = $body;
+                            Yii::app()->mailer->Send();
+                        }
+
+                        // Send an email to the admin contact with the transaction details.
+                        $body = Yii::app()->controller->renderPartial("//mail/approved_transaction_admin", $params, true);
+                        Yii::app()->mailer->clearAddresses();
+                        Yii::app()->mailer->AddAddress(Yii::app()->params['adminEmail']);
+                        Yii::app()->mailer->Body = $body;
+                        Yii::app()->mailer->Send();
+
+                        // Save the transaction data
+                        $modelTransaction = new Transaction;
+                        $modelTransaction->order_id = $modelOrder->id;
+                        $modelTransaction->type = 'contribution';
+                        $modelTransaction->vcs_terminal_id = 4828;
+                        $modelTransaction->vcs_reference_number = $xmlResponse->Reference;
+                        $modelTransaction->vcs_response = $xmlResponse->Response;
+                        $modelTransaction->vcs_cardholder_name = $xmlResponse->CardholderName;
+                        $modelTransaction->vcs_amount = $xmlResponse->Amount;
+                        $modelTransaction->vcs_card_type = $xmlResponse->CardType;
+                        $modelTransaction->vcs_description_of_goods = $xmlResponse->DescrOfGoods;
+                        $modelTransaction->vcs_cardholder_email_address = $xmlResponse->CardholderEmail;
+                        $modelTransaction->vcs_budget_period = $xmlResponse->BudgetPeriod;
+                        $modelTransaction->vcs_expiry_date = $xmlResponse->ExpiryDate;
+                        $modelTransaction->vcs_response_code = $xmlResponse->ResponseCode;
+                        $modelTransaction->vcs_cardholder_ip_address = $xmlResponse->CardHolderIpAddr;
+                        $modelTransaction->vcs_masked_card_number = $xmlResponse->MaskedCardNumber;
+                        $modelTransaction->vcs_transaction_type = $xmlResponse->TransactionType;
+                        
+                        $modelTransaction->save(false);
+                        
+                        Yii::log(var_export($modelTransaction->attributes, true), "error", "controllers.OrderController.checkout");
+                        
+                        
+                    }else{
+                        print "Failed";
+                        Yii::app()->end();
+                        
                     }
+
+                    // End: Handle Response
                     $this->redirect("/order/confirmation");
                }
             }
             
+            $model->order_id = $id;
             $this->render("checkout", array(
                 'model' => $model,
                 'registry' => $this->_registry,

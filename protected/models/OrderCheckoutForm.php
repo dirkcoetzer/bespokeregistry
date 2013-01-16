@@ -13,6 +13,7 @@ class OrderCheckoutForm extends CFormModel
     public $cvv_number;
     public $expiration_date_year;
     public $expiration_date_month;
+    public $order_id;
     
     /**
      * Declares the validation rules.
@@ -24,6 +25,7 @@ class OrderCheckoutForm extends CFormModel
         return array(
             // username and password are required
             array('name, card_type, card_number, cvv_number, expiration_date_year, expiration_date_month', 'required'),                            
+            array('order_id', 'safe'),
         );
     }
 

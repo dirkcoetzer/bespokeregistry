@@ -202,7 +202,7 @@ class Order extends CActiveRecord
     public function getYearOptions(){
         $year = date("Y", time());
         for ($i = 0; $i < 5; $i++){
-            $yearOptions[] = $year;
+            $yearOptions[$year] = $year;
             $year++;
         }
         return $yearOptions;
