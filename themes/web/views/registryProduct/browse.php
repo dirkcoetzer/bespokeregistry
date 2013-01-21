@@ -11,6 +11,20 @@ $this->menu=array(
 <div class="breadcrumb">
     <a href="/">Home</a> > <a href="<?php echo $this->createUrl("registry/find"); ?>">Find Registry</a> > <a href="<?php echo $this->createUrl("registry/find", array("rid" => $registry->id)); ?>">Search Results</a> > <span class="current">Buy a Gift</span>
 </div>
+<div class="couple-result">
+    <img alt="" src="<?php echo Registry::model()->getThumb($registry); ?>" >
+    <span class="registry-results-title"><?php echo $registry->title; ?></span><br>
+    <span class="wedding-date"><?php echo date("d M Y", $registry->event_date); ?></span>
+</div>
+
+<?php if ($registry->message){ ?>
+    <div class="content-outer couple-message">
+        <div class="content-inner">
+            <?php echo nl2br($registry->message); ?>
+        </div>
+    </div>
+<?php } ?>
+
 <h2>Buy a Gift</h2>
 <p>Browse the different gift categories by selecting the Choose Gift Category below. You can also choose to Contribute Towards one of the larger gift items. The starred items are the priority gifts. </p>
 <p><strong>Once you have selected one or more gifts please click on the checkout tab to proceed.</strong></p>
@@ -116,10 +130,19 @@ $this->menu=array(
     <?php } ?>
 </div>
 <div style="clear: both;"></div> 
+<div id="added_to_cart" title="This item has been added to your cart" style="display:none, width: 600px; height: 500px;">	
+    <p>The item you selected has been added to your cart. Please remember you have 20 minutes to make payment before this item is removed from your cart and will be available for another guest to buy.</p>
+    <p><i>Your order total: R <span id="orderTotal" ></span></i></p>
+    <br />
+    <hr />
+    <a href="<?php echo $this->createUrl("/order/summary", array("rid" => $registry->id)); ?>" class="checkout float-r"></a>
+    <a class="float_r" href="javascript: window.location.reload();">Continue Shopping</a>
+</div>
+
 <script type="text/javascript">
     $(".but-gift-btn, .contribute-btn").click(function(e){
         e.preventDefault();
-
+        
         if (parseInt($(this).parent().find("#purchase_qty").val()) < 1){
             alert("The quantity must be greater than 0.");
             $(this).parent().find("#purchase_qty").focus();
@@ -139,9 +162,15 @@ $this->menu=array(
           url,
           data,
           function(response){
-              // console.log(response);
-              
-                location.reload();
+            // console.log(response);
+            $('#added_to_cart').dialog({
+                width: 430,
+                height: 250,
+                modal: true
+            });
+            
+            $("#orderTotal").html(response.total);
+            return false;                
           },
           'json'
         );

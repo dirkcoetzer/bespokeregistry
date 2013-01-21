@@ -207,4 +207,15 @@ class Order extends CActiveRecord
         }
         return $yearOptions;
     }
+    
+    public function getSessionOrderTotal($order){
+        $total = 0;
+        if ($order["OrderDetails"]){
+            foreach ($order["OrderDetails"] as $orderDetail){
+                $total = $total + ($orderDetail["qty"] * $orderDetail["price"]);
+            }
+        }
+        
+        return $total;
+    }
 }

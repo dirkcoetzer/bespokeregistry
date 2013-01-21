@@ -496,9 +496,13 @@ class OrderController extends Controller
                 'type' => 'contribution',
                 );
         }
+        
+        $newTotal = Order::model()->getSessionOrderTotal($_SESSION["Order"][$modelRegistryProduct->registry->id]);
+        
         echo json_encode(array(
             "status" => true,
-            "message" => "Your product has been added to your order"
+            "message" => "Your product has been added to your order",
+            "total" => $newTotal,
         ));
         
         exit;

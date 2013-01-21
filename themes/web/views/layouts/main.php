@@ -108,19 +108,19 @@
                         array('label'=>'My Registry', 'url'=>array('/registryProduct/list')),
                         array('label'=>'Brands & Stores', 'url'=>array('/site/brandsandstores')),
                         array('label'=>'Contact', 'url'=>array('/site/contactUs')),
+                        array('label'=>'Search', 'url'=>array('/registry/find')),
                         //array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
                         //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
                     ),
                 ));
             ?>
         </div> <!-- End Main Nav -->
-
-        <div id="search">
-            <form id="search" action="<?php echo $this->createUrl("registry/find"); ?>" method="post" >
-                <input type="text" id="term" name="term" onfocus="if(!this._haschanged){this.value=''};this._haschanged=true;" value="Search for a registry" class="searchbox" /><input type="submit" class="search" value="Search" />
-            </form>
+        <!--
+        <div id="cart">
+            View Items <a href="#">2</a>
         </div>
-
+        -->
+        
         <?php echo $content; ?>
 
         <div class="clear"></div>

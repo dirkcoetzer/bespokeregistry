@@ -168,4 +168,12 @@ class Registry extends BespokeRegistryActiveRecord
 
         return parent::beforeSave();
     }
+    
+    public function getThumb($registry){
+        if (file_exists($registry->image_thumb)){
+            return "/".$registry->image_thumb;
+        }else{
+            return "/images/registries/thumbs/1339884547_defauly-couple-img.jpg";
+        }
+    }
 }
