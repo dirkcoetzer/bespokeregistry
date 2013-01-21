@@ -18,8 +18,8 @@ $this->menu=array(
     }
 ?>
 
-<h2 class="success">Your Payment Has been Successful!</h2>
-<h3>Thank you so much for using Bespoke. Your selected gifts will be delivered to the couple after their wedding.</h3>
+<h2 class="error">Your Payment Has been Unsuccessful.</h2>
+<h3>Please <a href="<?php echo $this->createUrl("/registryProduct/browse", array("rid" => $registry->id)); ?>">go back</a> and and try again.</h3>
 <br /><br />
 <div id="checkout-progress" class="step4">
 <div class="step1">Gift Bag</div>

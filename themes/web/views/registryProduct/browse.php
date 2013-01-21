@@ -41,7 +41,7 @@ $this->menu=array(
 
 <div class="order-checkout">
     <?php if ($_SESSION["Order"][$registry->id]){ ?>
-        <a href="<?php echo $this->createUrl("order/summary", array("rid" => $registry->id)); ?>" >Checkout</a>
+        <a href="<?php echo $this->createUrl("order/summary", array("rid" => $registry->id)); ?>" >Checkout <?php echo count($_SESSION["Order"][$registry->id]["OrderDetails"]); ?></a>
     <?php } ?>
 </div>
 <form id="frm-filter" name="frm-filter" action="<?php echo $this->createUrl("registryProduct/browse", array("rid" => $registry->id)); ?>" method="post" >

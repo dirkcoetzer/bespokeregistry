@@ -17,7 +17,7 @@ class OrderController extends Controller
 	{
             return array(
                 'accessControl', // perform access control for CRUD operations
-                'registryContext + summary message checkout create index giftWrapping print process' //check to ensure valid project context
+                'registryContext + summary message checkout checkoutError confirmation create index giftWrapping print process' //check to ensure valid project context
             );
 	}
 
@@ -30,7 +30,7 @@ class OrderController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('view','queueOrderDetails','unQueueOrderDetails','summary','message','checkout','confirmation','create','cancelled','declined','approved','giftWrapping','thankYouSent', 'print'),
+				'actions'=>array('view','queueOrderDetails','unQueueOrderDetails','summary','message','checkout','confirmation','checkoutError','create','cancelled','declined','approved','giftWrapping','thankYouSent', 'print'),
 				'users'=>array('*'),
 			),
             array(
@@ -288,10 +288,11 @@ class OrderController extends Controller
                     }else{
                         Yii::app()->user->setFlash('error', 'Your transaction failed with the following response:<br/>'.$xmlResponse->Response);
                         
+                        $this->redirect("/order/checkoutError?rid=" . $this->_registry->id);
                     }
 
                     // End: Handle Response
-                    $this->redirect("/order/confirmation");
+                    $this->redirect("/order/confirmation?rid=" . $this->_registry->id);
                }
             }
             
@@ -305,11 +306,23 @@ class OrderController extends Controller
                 'registry' => $this->_registry,
             ));
         }
-        
-        public function actionConfirmation(){
-            $this->layout = "column_left";
-            $this->render("confirmation");            
-        }
+     
+    /*
+     * Checkout confirmation
+     */
+    public function actionConfirmation(){
+        $this->layout = "column_left";
+        $this->render("confirmation", array("registry" => $this->_registry));            
+    }
+    
+    /*
+     * An error occurred during the checkout request.
+     */
+    public function actionCheckoutError(){
+        $this->layout = "column_left";
+        $this->render("checkout_error", array("registry" => $this->_registry));
+    }
+    
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
