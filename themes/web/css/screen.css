@@ -29,6 +29,10 @@ ol {padding-left: 30px; font-size: 13px; line-height: 22px;}
 ol#scheduleA li { margin-bottom: 5px;}
 ol li { font-size: 13px; margin-bottom: 20px;}
 div.password {padding: 0 0 0 12px; width: 130px;}
+.ui-widget-content, #ui-dialog-title-added_to_cart {font-family: Georgia !important;}
+
+.float-r {float: right; display: inline-block;}
+.float-l {float: left;}
 
 /* Some generic styles */
 
@@ -227,6 +231,7 @@ input.order-balance {height: 30px; display: inline-block; width: 65px; margin: 0
 .order-details-sections {padding: 20px 0 10px 0; min-height: 380px;}
 .order-details-sections label {width: 100px; display: inline-block; padding-bottom: 20px;}
 .order-details-sections label.message {width: 60px; display: inline-block;}
+.order-details-sections input[type="checkbox"] {width: 20px;}
 
 
 div.how-it-works {padding: 20px 60px 15px 30px; line-height: 22px; background: url("../images/content-devider.png") no-repeat scroll center bottom transparent;}

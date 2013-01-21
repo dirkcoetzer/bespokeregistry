@@ -10,7 +10,6 @@ $this->menu=array(
 ?>
 <div class="breadcrumb"><a href="#">Home</a> > <a href="#">Find Registry</a> > <a href="#">Search Results</a> > <span class="current">Buy a Gift</span></div>
 
-<h2>Confirmation</h2>
 <?php
     foreach(Yii::app()->user->getFlashes() as $key => $message) {
     ?>
@@ -19,12 +18,16 @@ $this->menu=array(
     }
 ?>
 
-<p>Thank you!</p>
-<div id="checkout-progress">
-<div class="step1 completed">1. My Cart</div>
-<div class="step1 completed">2. Order Details</div>
-<div class="step1 completed">3. My Payment</div>
-<div class="step1 active">4. Confirmation</div>
+<h2 class="success">Your Payment Has been Successful!</h2>
+<h3>Thank you so much for using Bespoke. Your selected gifts will be delivered to the couple after their wedding.</h3>
+<br /><br />
+<div id="checkout-progress" class="step4">
+<div class="step1">Gift Bag</div>
+<div class="step2">Order Details</div>
+<div class="step3">Payment</div>
+<div class="step4 active">Confirmation</div>
+<div class="checkout-status"></div>
+
 </div>
 <br /><br /><br />
 

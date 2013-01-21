@@ -1,3 +1,4 @@
+
 /* Cart styling  */
 
 .item-amount {width: 25px; height: 25px; text-align: center;-webkit-border-radius: 2px;
@@ -11,18 +12,44 @@ div#cart {background: url("../images/cart-btn.jpg") top left no-repeat; position
 div#cart a {font-size: 16px; width: 123px; height: 40px; display: inline-block; position: absolute; top: 0; left: 0; text-align: right; padding: 0 12px 0 0 ;}
 
 div#checkout-progress {width: 100%; display: inline; text-align: center;}
-div#checkout-progress div.step1.active, div#checkout-progress div.step2.active, div#checkout-progress div.step3.active, div#checkout-progress div.step4.active { border-bottom: 2px solid #765829; color: #3b3a3a;}
-div#checkout-progress div.step1, div#checkout-progress div.step2, div#checkout-progress div.step3, div#checkout-progress div.step4 {margin: 10px 0; width: 175px; float: left; border-bottom: 2px solid #b9b9b9; color: #b9b9b9; padding: 3px 0;}
-div#checkout-progress div.step1.completed span, div#checkout-progress div.step2.completed span, div#checkout-progress div.step3.completed span, 
-div#checkout-progress div.step4.completed span {background: url("../images/checkout-completed.jpg") right no-repeat; padding-right: 15px;}
+div#checkout-progress div.step1.active, div#checkout-progress div.step2.active, div#checkout-progress div.step3.active, div#checkout-progress div.step4.active { color: #3b3a3a;}
+div#checkout-progress div.step1, div#checkout-progress div.step2, div#checkout-progress div.step3, div#checkout-progress div.step4
+{float: left; color: #b9b9b9; padding: 3px 0;}
+
+div#checkout-progress div.step1 {margin: 10px 0 10px 0;width: 145px; }
+div#checkout-progress div.step2 {margin: 10px 0 10px 40px;width: 165px; }
+div#checkout-progress div.step3 {margin: 10px 0 10px 23px;width: 165px; }
+div#checkout-progress div.step4 {margin: 10px 0 10px 20px;width: 165px; }
+
+div#checkout-progress div.checkout-status {display: inline-block; margin: 0 0 0 60px; width: 596px; height:25px; background: url("../images/checkout-sprite.jpg") no-repeat;}
+div#checkout-progress.step1 div.checkout-status {background-position: 0 0;}
+div#checkout-progress.step2 div.checkout-status {background-position: 0 -27px;}
+div#checkout-progress.step3 div.checkout-status {background-position: 0 -54px;}
+div#checkout-progress.step4 div.checkout-status {background-position: 0 -84px;}
+div#checkout-progress.unsuccessful div.checkout-status {background-position: 0 -111px;}
+h2.error {background-color: #f1b5be; -webkit-border-radius: 3px; width: 90%; margin-left: 20px;
+-moz-border-radius: 3px;
+border-radius: 3px; border: 1px solid #d30927;}
+h2.success {background-color: #d7f1b5; -webkit-border-radius: 3px; width: 90%; margin-left: 20px;
+-moz-border-radius: 3px;
+border-radius: 3px; border: 1px solid #94bc61;}
+
+/*div#checkout-progress div.step1.completed span, div#checkout-progress div.step2.completed span, div#checkout-progress div.step3.completed span, 
+div#checkout-progress div.step4.completed span {background: url("../images/checkout-completed.jpg") right no-repeat; padding-right: 15px;}*/
 
 .checkout {background: url("../images/checkout-btn.png") 0 -3px no-repeat; display: inline-block; width: 151px; height: 44px;}
 .checkout:hover {background-position: 0 -47px; }
+
+.proceed-order-details {background: url("../images/order-details-btn.png") 0 -3px no-repeat; display: inline-block; width: 281px; height: 44px; margin: 15px 20px 0 0;}
+.proceed-order-details:hover {background-position: 0 -47px; }
+
+.proceed-payment {background: url("../images/proceed-payment-btn.png") 0 -3px no-repeat; display: inline-block; width: 251px; height: 44px; margin: 15px 20px 0 0;}
+.proceed-payment:hover {background-position: 0 -47px; }
+
+.pay-now {background: url("../images/pay-now-btn.png") 0 -3px no-repeat; display: inline-block; width:159px; height: 44px; margin: 15px 20px 0 0;}
+.pay-now:hover {background-position: 0 -47px; }
+
 .ui-widget-content a {color: #886b3e !important; text-decoration: none; font-style: italic;  line-height: 44px;} 
 .ui-widget-content a:hover {text-decoration: underline;}
 a.secure-checkout {background: url("../images/secure-checkout-btn.png") top left no-repeat; display: inline-block; width: 302px; height: 40px; margin: 20px 20px 10px 0;}
 a.secure-checkout:hover {background-position: 0 -40px; }
-
-.link-continue-shopping{
-    display: inline-block; width: 150px; text-align: right; float: right; line-height: 70px; margin: 0 20px 0 0;
-}

@@ -13,11 +13,13 @@ $this->menu=array(
 <h2>Order Details</h2>
 <p>Write your message which will be passed onto the couple. Please fill in your details below for the contact and invoice details. The contact details will only be used if we have a query regarding your purchase.</p>
 
-<div id="checkout-progress">
-<div class="step1 completed"><span>1. My Cart</span></div>
-<div class="step2 active"><span>2. Order Details</span></div>
-<div class="step3"><span>3. My Payment</span></div>
-<div class="step4"><span>4. Confirmation</span></div>
+<div id="checkout-progress" class="step2">
+<div class="step1">Gift Bag</div>
+<div class="step2 active">Order Details</div>
+<div class="step3">Payment</div>
+<div class="step4">Confirmation</div>
+<div class="checkout-status"></div>
+
 </div>
 <br /><br /><br />
 
@@ -68,14 +70,14 @@ $this->menu=array(
     <?php $this->endWidget(); ?>
 </div>
 
-<a href="#" class="secure-checkout float-r"></a>
-<a class="link-continue-shopping float_r" href="<?php echo $this->createUrl("registryProduct/browse", array("rid" => $registry->id)); ?>">Continue Shopping</a>
+<a href="#" class="proceed-payment float-r"></a>
+<a style="display: inline-block; width: 150px; text-align: right; float: right; line-height: 70px; margin: 0 20px 0 0;" class="float_r" href="<?php echo $this->createUrl("registryProduct/browse", array("rid" => $registry->id)); ?>">Continue Shopping</a>
 <br />
 <img class="float-l" style="margin: 0 0 0 20px;" src="<?php echo Yii::app()->theme->baseUrl; ?>/images/payment-logos.png" alt="Payment Options">
 <br class="clear" />
 
 <script type="text/javascript" >
-    $("a.secure-checkout").click(function(e){
+    $("a.proceed-payment").click(function(e){
         e.preventDefault();
         $("#order-form").submit();
     });
