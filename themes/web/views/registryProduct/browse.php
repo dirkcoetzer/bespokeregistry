@@ -130,7 +130,7 @@ $this->menu=array(
     <?php } ?>
 </div>
 <div style="clear: both;"></div> 
-<div id="added_to_cart" title="This item has been added to your cart" style="display:none, width: 600px; height: 500px;">	
+<div id="added_to_cart" title="This item has been added to your cart" style="display:none; width: 600px; height: 500px;">	
     <p>The item you selected has been added to your cart. Please remember you have 20 minutes to make payment before this item is removed from your cart and will be available for another guest to buy.</p>
     <p><i>Your order total: R <span id="orderTotal" ></span></i></p>
     <br />

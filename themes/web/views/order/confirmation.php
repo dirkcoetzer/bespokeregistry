@@ -18,7 +18,7 @@ $this->menu=array(
     }
 ?>
 
-<h2 class="success">Your Payment Has been Successful!</h2>
+<h2 class="success">Your Payment Has Been Successful!</h2>
 <h3>Thank you so much for using Bespoke. Your selected gifts will be delivered to the couple after their wedding.</h3>
 <br /><br />
 <div id="checkout-progress" class="step4">
