@@ -69,16 +69,21 @@ $this->menu=array(
     </div>
     <?php $this->endWidget(); ?>
 </div>
-
+<div id="payment-options">
 <a href="#" class="pay-now float-r"></a>
 <a style="display: inline-block; width: 150px; text-align: right; float: right; line-height: 70px; margin: 0 20px 0 0;" class="float_r"  href="<?php echo $this->createUrl("registryProduct/browse", array("rid" => $registry->id)); ?>">Continue Shopping</a>
-<br />
+</div>
+<br/><br/>
+<div>
 <img class="float-l" style="margin: 0 0 0 20px;" src="<?php echo Yii::app()->theme->baseUrl; ?>/images/payment-logos.png" alt="Payment Options">
+</div>
 <br class="clear" />
 
 <script type="text/javascript" >
     $("a.pay-now").click(function(e){
         e.preventDefault();
+        $("#payment-options").html('<span style="display: inline-block; width: 150px; text-align: right; float: right; line-height: 70px; margin: 0 20px 0 0;" class="float_r">Processing Payment...</span>');
+        
         $("#order-form").submit();
     });
 </script>
